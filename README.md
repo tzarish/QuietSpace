@@ -32,11 +32,17 @@ QuietSpace provides a **"live" dashboard** of room availability:
 
 ## 📂 Project Structure
 /quiet-space
+
 ├── index.html # Student dashboard
+
 ├── admin.html # Staff update portal
+
 ├── style.css # Mobile-first styling
+
 ├── script.js # Data fetching logic
+
 └── rooms.json # Live room data
+
 
 
 ---
