@@ -1,0 +1,113 @@
+{
+  "teachers": [
+    { "name": "Jean Woods-Powell",         "department": "Administration",                      "role": "elevated", "password": "jean.woods" },
+    { "name": "Natalie Bousigard-Hyde",    "department": "Administration",                      "role": "elevated", "password": "natalie.bousigard" },
+    { "name": "Adela Brudasca",            "department": "Administration",                      "role": "elevated", "password": "adela.brudasca" },
+    { "name": "Sean Kilian",               "department": "Administration",                      "role": "elevated", "password": "sean.kilian" },
+    { "name": "Kenneth Ojeda",             "department": "Administration",                      "role": "elevated", "password": "kenneth.ojeda" },
+    { "name": "Elicia Rodriguez",          "department": "Administration",                      "role": "elevated", "password": "elicia.rodriguez" },
+    { "name": "Cherry Sambrano",           "department": "Administration",                      "role": "elevated", "password": "cherry.sambrano" },
+
+    { "name": "Judy Cho",                  "department": "Art & Music",                         "role": "staff",    "password": "judy.cho" },
+    { "name": "Matthew Elliot",            "department": "Art & Music",                         "role": "staff",    "password": "matthew.elliot" },
+    { "name": "Caroline Fortuna-Fernandez","department": "Art & Music",                         "role": "staff",    "password": "caroline.fortuna" },
+
+    { "name": "Andy Hadel",                "department": "Career and Technical Education",      "role": "staff",    "password": "andy.hadel" },
+    { "name": "Richard Nelson",            "department": "Career and Technical Education",      "role": "staff",    "password": "richard.nelson" },
+    { "name": "Gregory Rivera",            "department": "Career and Technical Education",      "role": "staff",    "password": "gregory.rivera" },
+    { "name": "Mike Vanderputten",         "department": "Career and Technical Education",      "role": "staff",    "password": "mike.vanderputten" },
+    { "name": "Demaire Dowdy",             "department": "Career and Technical Education",      "role": "staff",    "password": "demaire.dowdy" },
+
+    { "name": "Amer Ismael",               "department": "Data Specialist",                     "role": "staff",    "password": "amer.ismael" },
+
+    { "name": "Patrick Franck",            "department": "Deans",                               "role": "elevated", "password": "patrick.franck" },
+    { "name": "Matthew Reid",              "department": "Deans",                               "role": "elevated", "password": "matthew.reid" },
+
+    { "name": "Gloria Brown",              "department": "English & ESL",                       "role": "staff",    "password": "gloria.brown" },
+    { "name": "Jaime Brown",               "department": "English & ESL",                       "role": "staff",    "password": "jaime.brown" },
+    { "name": "Sofia D'Louis",             "department": "English & ESL",                       "role": "staff",    "password": "sofia.dlouis" },
+    { "name": "Jeremiah Duffy",            "department": "English & ESL",                       "role": "staff",    "password": "jeremiah.duffy" },
+    { "name": "Clifford Jean Philippe",    "department": "English & ESL",                       "role": "staff",    "password": "clifford.jean" },
+    { "name": "Kelly Kaso",                "department": "English & ESL",                       "role": "staff",    "password": "kelly.kaso" },
+    { "name": "Jackeline Mendoça",         "department": "English & ESL",                       "role": "staff",    "password": "jackeline.mendoca" },
+    { "name": "Gary Morrison",             "department": "English & ESL",                       "role": "staff",    "password": "gary.morrison" },
+    { "name": "Suzan Muzafar",             "department": "English & ESL",                       "role": "staff",    "password": "suzan.muzafar" },
+    { "name": "Crystal Robinson",          "department": "English & ESL",                       "role": "staff",    "password": "crystal.robinson" },
+    { "name": "Olga Sakhno",               "department": "English & ESL",                       "role": "staff",    "password": "olga.sakhno" },
+
+    { "name": "Johanna Guzman",            "department": "Foreign Language",                    "role": "staff",    "password": "johanna.guzman" },
+    { "name": "Mary Harvey",               "department": "Foreign Language",                    "role": "staff",    "password": "mary.harvey" },
+    { "name": "Malky Ortiz",               "department": "Foreign Language",                    "role": "staff",    "password": "malky.ortiz" },
+
+    { "name": "Jill Becker",               "department": "Guidance",                            "role": "staff",    "password": "jill.becker" },
+    { "name": "Brenda Gargano",            "department": "Guidance",                            "role": "staff",    "password": "brenda.gargano" },
+    { "name": "Joyce Soberal Lopez",       "department": "Guidance",                            "role": "staff",    "password": "joyce.soberal" },
+    { "name": "Laura Soriano",             "department": "Guidance",                            "role": "staff",    "password": "laura.soriano" },
+
+    { "name": "Arthur Chen",               "department": "Mathematics",                         "role": "staff",    "password": "arthur.chen" },
+    { "name": "Sabrina Chen",              "department": "Mathematics",                         "role": "staff",    "password": "sabrina.chen" },
+    { "name": "Jennifer Lim",              "department": "Mathematics",                         "role": "staff",    "password": "jennifer.lim" },
+    { "name": "Jaimie Shin",               "department": "Mathematics",                         "role": "staff",    "password": "jaimie.shin" },
+    { "name": "Camille Smith",             "department": "Mathematics",                         "role": "staff",    "password": "camille.smith" },
+
+    { "name": "Lucito Ladignon",           "department": "Physical Education",                  "role": "staff",    "password": "lucito.ladignon" },
+    { "name": "Jorge Londono",             "department": "Physical Education",                  "role": "staff",    "password": "jorge.londono" },
+    { "name": "John Petropoulos",          "department": "Physical Education",                  "role": "staff",    "password": "john.petropoulos" },
+    { "name": "Geoffe Serrano",            "department": "Physical Education",                  "role": "staff",    "password": "geoffe.serrano" },
+
+    { "name": "Danielle Kinzer",           "department": "Programmer",                          "role": "staff",    "password": "danielle.kinzer" },
+
+    { "name": "Priya Brijmohan",           "department": "School Psychologist",                 "role": "staff",    "password": "priya.brijmohan" },
+
+    { "name": "Engy Hanna",                "department": "SBST",                                "role": "staff",    "password": "engy.hanna" },
+    { "name": "Chris Tice",                "department": "SBST",                                "role": "staff",    "password": "chris.tice" },
+
+    { "name": "Harry Chan",                "department": "Science",                             "role": "staff",    "password": "harry.chan" },
+    { "name": "Summer Ha",                 "department": "Science",                             "role": "staff",    "password": "summer.ha" },
+    { "name": "Peter Liu",                 "department": "Science",                             "role": "staff",    "password": "peter.liu" },
+    { "name": "Rennie Ramnanan",           "department": "Science",                             "role": "staff",    "password": "rennie.ramnanan" },
+    { "name": "William Turner",            "department": "Science",                             "role": "staff",    "password": "william.turner" },
+
+    { "name": "Joel Alfaro",               "department": "Social Studies",                      "role": "staff",    "password": "joel.alfaro" },
+    { "name": "Danni Estrada",             "department": "Social Studies",                      "role": "staff",    "password": "danni.estrada" },
+    { "name": "Charlotte Martin",          "department": "Social Studies",                      "role": "staff",    "password": "charlotte.martin" },
+    { "name": "Kerri McHugh",              "department": "Social Studies",                      "role": "staff",    "password": "kerri.mchugh" },
+    { "name": "Nicole Prusher",            "department": "Social Studies",                      "role": "staff",    "password": "nicole.prusher" },
+    { "name": "Brian Siu",                 "department": "Social Studies",                      "role": "staff",    "password": "brian.siu" },
+
+    { "name": "Guerda Adrien",             "department": "Special Education",                   "role": "staff",    "password": "guerda.adrien" },
+    { "name": "Daniel Alexis",             "department": "Special Education",                   "role": "staff",    "password": "daniel.alexis" },
+    { "name": "Natalia Bear",              "department": "Special Education",                   "role": "staff",    "password": "natalia.bear" },
+    { "name": "Amy Chen",                  "department": "Special Education",                   "role": "staff",    "password": "amy.chen" },
+    { "name": "Ahmed Chowdhury",           "department": "Special Education",                   "role": "staff",    "password": "ahmed.chowdhury" },
+    { "name": "Kim James",                 "department": "Special Education",                   "role": "staff",    "password": "kim.james" },
+    { "name": "Brendan McCormick",         "department": "Special Education",                   "role": "staff",    "password": "brendan.mccormick" },
+    { "name": "Jacqueline McConnell",      "department": "Special Education",                   "role": "staff",    "password": "jacqueline.mcconnell" },
+    { "name": "Michael Miller",            "department": "Special Education",                   "role": "staff",    "password": "michael.miller" },
+    { "name": "Wilmyr Mosqueda",           "department": "Special Education",                   "role": "staff",    "password": "wilmyr.mosqueda" },
+    { "name": "Myrtho Noel",               "department": "Special Education",                   "role": "staff",    "password": "myrtho.noel" },
+    { "name": "Kassandra Renza",           "department": "Special Education",                   "role": "staff",    "password": "kassandra.renza" },
+    { "name": "Liberato Rollon",           "department": "Special Education",                   "role": "staff",    "password": "liberato.rollon" },
+    { "name": "Alexis Green Dantzler",     "department": "Special Education",                   "role": "staff",    "password": "alexis.green" },
+    { "name": "Tevon Wilson",              "department": "Special Education",                   "role": "staff",    "password": "tevon.wilson" },
+
+    { "name": "Susan Berland",             "department": "Special Education Paraprofessionals", "role": "staff",    "password": "susan.berland" },
+    { "name": "Amy Delpezo",               "department": "Special Education Paraprofessionals", "role": "staff",    "password": "amy.delpezo" },
+    { "name": "Umar Ishmael",              "department": "Special Education Paraprofessionals", "role": "staff",    "password": "umar.ishmael" },
+    { "name": "Selina Manick",             "department": "Special Education Paraprofessionals", "role": "staff",    "password": "selina.manick" },
+    { "name": "Sharnjit Rai",              "department": "Special Education Paraprofessionals", "role": "staff",    "password": "sharnjit.rai" },
+    { "name": "Winsome Ravello",           "department": "Special Education Paraprofessionals", "role": "staff",    "password": "winsome.ravello" },
+    { "name": "Ratna Saha",                "department": "Special Education Paraprofessionals", "role": "staff",    "password": "ratna.saha" },
+    { "name": "Travis Milien",             "department": "Special Education Paraprofessionals", "role": "staff",    "password": "travis.milien" },
+
+    { "name": "Nadine Douse",              "department": "Support Staff",                       "role": "staff",    "password": "nadine.douse" },
+    { "name": "Dorian Duryea",             "department": "Support Staff",                       "role": "staff",    "password": "dorian.duryea" },
+    { "name": "Melvin Lopez",              "department": "Support Staff",                       "role": "staff",    "password": "melvin.lopez" },
+    { "name": "Lisa Mack",                 "department": "Support Staff",                       "role": "staff",    "password": "lisa.mack" },
+    { "name": "Terry McMillan",            "department": "Support Staff",                       "role": "staff",    "password": "terry.mcmillan" },
+    { "name": "Susan McSorley",            "department": "Support Staff",                       "role": "staff",    "password": "susan.mcsorley" },
+    { "name": "Falicia Williams",          "department": "Support Staff",                       "role": "staff",    "password": "falicia.williams" },
+
+    { "name": "Dwayne Grant",              "department": "Technology Director",                 "role": "staff",    "password": "dwayne.grant" }
+  ]
+}
