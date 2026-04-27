@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuietSpace — Staff Access</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body class="admin-body">
+  <header>
+    <div class="header-left">
+      <h1>🔇 QuietSpace</h1>
+      <p class="tagline">Staff Room Management</p>
+    </div>
+    <div class="header-right" id="teacher-info" style="display:none">
+      <span id="teacher-name-label" class="teacher-badge"></span>
+      <button id="logout-btn" class="btn btn-ghost">Log out</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Login gate -->
+    <div id="login-screen" class="login-screen">
+      <div class="login-card">
+        <h2>Staff Access</h2>
+        <p>Enter your personal staff password to manage room availability.</p>
+        <form id="login-form">
+          <input
+            type="password"
+            id="password-input"
+            placeholder="Your password"
+            autocomplete="current-password"
+            required
+          />
+          <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+        <p id="login-error" class="error-msg hidden">Incorrect password. Try again.</p>
+        <a href="index.html" class="back-link">← Back to student view</a>
+      </div>
+    </div>
+
+    <!-- Admin panel -->
+    <div id="admin-panel" class="hidden">
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-label">Floor</span>
+          <div class="filter-bar" id="floor-filters">
+            <button class="filter-btn active" data-floor="all">All Floors</button>
+            <button class="filter-btn" data-floor="2">2nd Floor</button>
+            <button class="filter-btn" data-floor="3">3rd Floor</button>
+            <button class="filter-btn" data-floor="4">4th Floor</button>
+          </div>
+        </div>
+        <div class="filter-group">
+          <span class="filter-label">Status</span>
+          <div class="filter-bar" id="status-filters">
+            <button class="filter-btn active" data-status="all">All</button>
+            <button class="filter-btn" data-status="open">Available</button>
+            <button class="filter-btn" data-status="closed">Closed</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="admin-room-grid" class="room-grid">
+        <p class="loading">Loading rooms…</p>
+      </div>
+    </div>
+  </main>
+
+  <script src="admin.js"></script>
+</body>
+</html>

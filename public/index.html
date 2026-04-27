@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>QuietSpace — Study Room Finder</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header>
+    <div class="header-left">
+      <h1>🔇 QuietSpace</h1>
+      <p class="tagline">Find your study spot — fast.</p>
+    </div>
+    <div class="header-right">
+      <span id="last-refresh" class="refresh-label"></span>
+      <a href="admin.html" class="btn btn-ghost staff-btn">Staff Access</a>
+    </div>
+  </header>
+
+  <main>
+    <div class="search-bar-wrap">
+      <input
+        type="search"
+        id="search-input"
+        placeholder="Search by room number or teacher name…"
+        autocomplete="off"
+      />
+    </div>
+
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-label">Floor</span>
+        <div class="filter-bar" id="floor-filters">
+          <button class="filter-btn active" data-floor="all">All Floors</button>
+          <button class="filter-btn" data-floor="2">2nd Floor</button>
+          <button class="filter-btn" data-floor="3">3rd Floor</button>
+          <button class="filter-btn" data-floor="4">4th Floor</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-label">Status</span>
+        <div class="filter-bar" id="status-filters">
+          <button class="filter-btn active" data-status="all">All</button>
+          <button class="filter-btn" data-status="open">Available</button>
+          <button class="filter-btn" data-status="closed">Closed</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="room-grid" class="room-grid">
+      <p class="loading">Loading rooms…</p>
+    </div>
+  </main>
+
+  <script src="script.js"></script>
+</body>
+</html>
