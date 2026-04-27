@@ -1,32 +1,40 @@
 :root {
-  --green: #22c55e;
-  --green-bg: #dcfce7;
-  --red: #ef4444;
-  --red-bg: #fee2e2;
-  --gray: #6b7280;
-  --gray-light: #f3f4f6;
-  --border: #e5e7eb;
-  --text: #111827;
-  --text-muted: #6b7280;
-  --radius: 12px;
-  --shadow: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 6px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.06);
+  --green:       #1e7a45;
+  --green-light: #d1fae5;
+  --red:         #8b1a1a;
+  --red-light:   #fee2e2;
+  --amber:       #b45309;
+  --amber-light: #fef3c7;
+  --gray:        #6b7280;
+  --gray-light:  #f3f4f6;
+  --border:      #e5e7eb;
+  --text:        #111827;
+  --text-muted:  #6b7280;
+  --radius:      10px;
+  --shadow:      0 1px 4px rgba(0,0,0,0.10);
+  --shadow-md:   0 4px 12px rgba(0,0,0,0.12);
 }
 
 * { box-sizing: border-box; margin: 0; padding: 0; }
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  background: #f9fafb;
+  background: #d6d6d6;
   color: var(--text);
   min-height: 100vh;
+}
+
+.header-logo {
+  height: 44px;
+  width: auto;
+  display: block;
 }
 
 /* ── Header ── */
 header {
   background: #fff;
   border-bottom: 1px solid var(--border);
-  padding: 16px 24px;
+  padding: 14px 28px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -37,8 +45,8 @@ header {
 .header-left { display: flex; align-items: center; gap: 12px; }
 .header-right { display: flex; align-items: center; gap: 10px; }
 
-header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; }
-.tagline   { color: var(--text-muted); font-size: 0.85rem; }
+header h1   { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; }
+.tagline    { color: var(--text-muted); font-size: 0.85rem; }
 
 .refresh-label {
   font-size: 0.75rem;
@@ -50,19 +58,18 @@ header h1 { font-size: 1.4rem; font-weight: 700; letter-spacing: -0.02em; }
 
 .staff-btn { font-size: 0.8rem; padding: 6px 14px; text-decoration: none; }
 
-/* ── Search bar ── */
-main { padding: 0 24px 40px; }
+/* ── Main layout ── */
+main { padding: 0 28px 48px; }
 
-.search-bar-wrap {
-  padding: 20px 0 0;
-}
+/* ── Search bar ── */
+.search-bar-wrap { padding: 22px 0 0; }
 
 .search-bar-wrap input {
   width: 100%;
-  padding: 10px 16px;
+  padding: 11px 18px;
   border: 1px solid var(--border);
   border-radius: 999px;
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   outline: none;
   background: #fff;
   transition: border-color 0.15s, box-shadow 0.15s;
@@ -74,12 +81,11 @@ main { padding: 0 24px 40px; }
 }
 
 /* ── Filter row ── */
-
 .filter-row {
   display: flex;
   flex-wrap: wrap;
   gap: 20px;
-  padding: 20px 0 0;
+  padding: 18px 0 0;
 }
 
 .filter-group {
@@ -89,7 +95,7 @@ main { padding: 0 24px 40px; }
 }
 
 .filter-label {
-  font-size: 0.78rem;
+  font-size: 0.75rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: uppercase;
@@ -102,7 +108,7 @@ main { padding: 0 24px 40px; }
 .filter-btn {
   border: 1px solid var(--border);
   background: #fff;
-  padding: 5px 14px;
+  padding: 5px 15px;
   border-radius: 999px;
   font-size: 0.82rem;
   cursor: pointer;
@@ -110,104 +116,274 @@ main { padding: 0 24px 40px; }
   transition: all 0.15s;
 }
 
-.filter-btn:hover { border-color: #9ca3af; color: var(--text); }
+.filter-btn:hover  { border-color: #9ca3af; color: var(--text); }
 .filter-btn.active { background: var(--text); color: #fff; border-color: var(--text); }
 
-/* ── Room grid ── */
+/* ── Room grid — exactly 4 columns, generous gaps ── */
 .room-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: 14px;
-  margin-top: 18px;
+  grid-template-columns: repeat(4, 1fr);
+  column-gap: 28px;
+  row-gap: 22px;
+  margin-top: 22px;
 }
 
 .loading { color: var(--text-muted); font-size: 0.9rem; padding: 20px 0; }
 
+/* ── Floor sections (All Floors view) ── */
+.floor-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+  margin-top: 22px;
+}
+
+.floor-section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.floor-section-title {
+  font-size: 1.05rem;
+  font-weight: 800;
+  color: var(--text);
+  white-space: nowrap;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  letter-spacing: -0.01em;
+  text-decoration: underline;
+  text-decoration-color: #9ca3af;
+  text-underline-offset: 3px;
+  transition: color 0.15s;
+}
+
+.floor-section-title:hover { color: #4f46e5; text-decoration-color: #4f46e5; }
+
+.floor-section-divider {
+  flex: 1;
+  height: 2px;
+  background: #d1d5db;
+  border-radius: 999px;
+}
+
 /* ── Room card ── */
 .room-card {
   background: #fff;
-  border: 1px solid var(--border);
   border-radius: var(--radius);
-  padding: 18px;
-  box-shadow: var(--shadow);
+  padding: 22px 20px 18px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
-  transition: box-shadow 0.15s;
+  align-items: center;
+  gap: 10px;
+  text-align: center;
+  transition: transform 0.12s, box-shadow 0.12s;
+  box-shadow: var(--shadow);
+  min-height: 280px;
 }
 
-.room-card:hover { box-shadow: var(--shadow-md); }
+.room-card:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
 
-.room-card.open   { border-left: 4px solid var(--green); }
-.room-card.closed { border-left: 4px solid #d1d5db; opacity: 0.8; }
+.room-card.open    { border: 2.5px solid var(--green); }
+.room-card.closed  { border: 2.5px solid var(--red); }
+.room-card.meeting { border: 2.5px solid var(--amber); }
 
-.room-meta {
-  font-size: 0.72rem;
-  font-weight: 600;
+/* ── Card top row (floor + name tag) ── */
+.card-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 6px;
+}
+
+.card-floor {
+  font-size: 0.7rem;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.07em;
   color: var(--text-muted);
 }
 
-.room-number { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.01em; }
+/* ── Room number ── */
+.room-number {
+  font-size: 4rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #111;
+  letter-spacing: -0.03em;
+}
 
 /* ── Status badge ── */
 .status-badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  font-size: 0.78rem;
-  font-weight: 600;
-  padding: 3px 9px;
-  border-radius: 999px;
-  width: fit-content;
-}
-
-.status-badge::before { content: ''; width: 6px; height: 6px; border-radius: 50%; }
-
-.status-badge.open   { background: var(--green-bg); color: #15803d; }
-.status-badge.open::before { background: var(--green); }
-
-.status-badge.closed { background: var(--gray-light); color: var(--gray); }
-.status-badge.closed::before { background: #9ca3af; }
-
-/* ── Supervisor label ── */
-.supervisor-label { font-size: 0.8rem; color: var(--text-muted); }
-.supervisor-name  { color: var(--text); font-weight: 500; }
-
-.you-tag {
-  font-size: 0.72rem;
-  color: #15803d;
-  font-weight: 600;
-}
-
-/* ── Admin toggle ── */
-.toggle-btn {
-  margin-top: 2px;
-  border: none;
-  padding: 7px 12px;
-  border-radius: 8px;
+  display: block;
+  width: 100%;
+  text-align: center;
   font-size: 0.8rem;
+  font-weight: 800;
+  padding: 6px 0;
+  border-radius: 6px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.status-badge.open    { background: var(--green); color: #fff; }
+.status-badge.closed  { background: var(--red);   color: #fff; }
+.status-badge.meeting { background: var(--amber);  color: #fff; }
+
+/* ── Card detail rows ── */
+.card-details {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+}
+
+.card-detail-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 0.78rem;
+}
+
+.detail-label {
   font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  font-size: 0.68rem;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+.detail-value {
+  color: var(--text);
+  font-weight: 500;
+  text-align: right;
+}
+
+/* ── Room name tag ── */
+.room-name-tag {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: #4f46e5;
+  background: #eef2ff;
+  padding: 2px 8px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+/* ── Closing time (legacy, kept for admin cards) ── */
+.closing-time { font-size: 0.75rem; color: var(--text-muted); }
+
+/* ── You tag ── */
+.you-tag { font-size: 0.7rem; color: var(--green); font-weight: 700; }
+
+/* ── Time info (admin open card) ── */
+.time-info { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+
+/* ── Open options (two buttons side by side) ── */
+.open-options {
+  display: flex;
+  gap: 8px;
+  width: 100%;
+  margin-top: 4px;
+}
+
+.open-options .toggle-btn { flex: 1; }
+
+/* ── Admin toggle buttons ── */
+.toggle-btn {
+  border: none;
+  padding: 8px 10px;
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 700;
   cursor: pointer;
   transition: opacity 0.15s;
   width: 100%;
   text-align: center;
+  line-height: 1.3;
 }
 
-.toggle-btn:disabled          { opacity: 0.5; cursor: not-allowed; }
+.toggle-btn:disabled             { opacity: 0.45; cursor: not-allowed; }
 .toggle-btn:hover:not(:disabled) { opacity: 0.82; }
-.toggle-btn.make-closed       { background: var(--gray-light); color: var(--gray); }
-.toggle-btn.make-open         { background: var(--green-bg); color: #15803d; }
+.toggle-btn.make-open    { background: var(--green-light); color: var(--green); }
+.toggle-btn.make-meeting { background: var(--amber-light); color: var(--amber); }
+.toggle-btn.make-closed  { background: var(--gray-light);  color: var(--gray);  }
 
 .toggle-locked {
-  margin-top: 2px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   color: var(--text-muted);
   text-align: center;
-  padding: 7px 0;
+  padding: 8px 0;
   font-style: italic;
+  width: 100%;
 }
+
+/* ── Time form ── */
+.time-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+  padding: 12px;
+  background: var(--gray-light);
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+.time-form-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.time-inputs {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+
+.time-label {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.time-label input[type="time"] {
+  padding: 5px 8px;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font-size: 0.82rem;
+  background: #fff;
+  width: auto;
+}
+
+.time-sep   { color: var(--text-muted); font-size: 0.85rem; margin-top: 14px; }
+.time-hint  { font-size: 0.68rem; color: var(--text-muted); font-style: italic; }
+
+.time-actions { display: flex; gap: 6px; justify-content: flex-end; }
+.btn-sm       { padding: 5px 12px; font-size: 0.76rem; }
+
+/* ── Supervisor label (admin card) ── */
+.supervisor-label { font-size: 0.8rem; color: #444; text-align: center; }
+.supervisor-name  { color: var(--text); font-weight: 600; }
 
 /* ── Buttons ── */
 .btn {
@@ -270,7 +446,6 @@ input:focus { border-color: #9ca3af; }
   text-decoration: none;
   text-align: center;
 }
-
 .back-link:hover { color: var(--text); }
 
 /* ── Teacher badge ── */
@@ -281,6 +456,14 @@ input:focus { border-color: #9ca3af; }
   padding: 5px 12px;
   border-radius: 999px;
   white-space: nowrap;
+}
+
+/* ── Admin header spacer ── */
+.admin-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 0 0;
 }
 
 /* ── Utilities ── */

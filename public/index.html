@@ -9,15 +9,13 @@
 <body>
   <header>
     <div class="header-left">
-      <h1>🔇 QuietSpace</h1>
-      <p class="tagline">Find your study spot — fast.</p>
+      <a href="index.html"><img src="QS_logo.jpg" alt="QuietSpace" class="header-logo" /></a>
     </div>
     <div class="header-right">
       <span id="last-refresh" class="refresh-label"></span>
       <a href="admin.html" class="btn btn-ghost staff-btn">Staff Access</a>
     </div>
   </header>
-
   <main>
     <div class="search-bar-wrap">
       <input
@@ -27,7 +25,6 @@
         autocomplete="off"
       />
     </div>
-
     <div class="filter-row">
       <div class="filter-group">
         <span class="filter-label">Floor</span>
@@ -43,16 +40,15 @@
         <div class="filter-bar" id="status-filters">
           <button class="filter-btn active" data-status="all">All</button>
           <button class="filter-btn" data-status="open">Available</button>
-          <button class="filter-btn" data-status="closed">Closed</button>
+          <button class="filter-btn" data-status="closed">Empty</button>
+          <button class="filter-btn" data-status="meeting">Meeting</button>
         </div>
       </div>
     </div>
-
     <div id="room-grid" class="room-grid">
       <p class="loading">Loading rooms…</p>
     </div>
   </main>
-
   <script src="script.js"></script>
 </body>
 </html>
