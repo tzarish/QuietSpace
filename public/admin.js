@@ -1,29 +1,29 @@
 let sessionPassword = null;
-let sessionTeacher  = null;
-let allRooms        = [];
-let activeFloor     = 'all';
-let activeStatus    = 'all';
-let editingId       = null; // room currently in inline-edit mode
+let sessionTeacher = null;
+let allRooms = [];
+let activeFloor = 'all';
+let activeStatus = 'all';
+let editingId = null; // room currently in inline-edit mode
 
 // ── Auth ──────────────────────────────────────────────
 document.getElementById('login-form').addEventListener('submit', async e => {
   e.preventDefault();
   const password = document.getElementById('password-input').value;
-  const error    = document.getElementById('login-error');
+  const error = document.getElementById('login-error');
 
   const res = await fetch('/api/admin/login', {
-    method:  'POST',
+    method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ password }),
+    body: JSON.stringify({ password }),
   });
 
   if (res.ok) {
     const data = await res.json();
     sessionPassword = password;
-    sessionTeacher  = data;
+    sessionTeacher = data;
 
     const isElevated = data.role === 'elevated';
-    const rolePill   = isElevated
+    const rolePill = isElevated
       ? `<span class="role-pill">Dean</span>`
       : '';
     document.getElementById('teacher-name-label').innerHTML =
@@ -40,8 +40,8 @@ document.getElementById('login-form').addEventListener('submit', async e => {
 
 document.getElementById('logout-btn').addEventListener('click', () => {
   sessionPassword = null;
-  sessionTeacher  = null;
-  editingId       = null;
+  sessionTeacher = null;
+  editingId = null;
   document.getElementById('admin-panel').classList.add('hidden');
   document.getElementById('teacher-info').style.display = 'none';
   document.getElementById('login-screen').classList.remove('hidden');
@@ -73,7 +73,7 @@ function fmt12(hhmm) {
   if (!hhmm) return '';
   const [h, m] = hhmm.split(':').map(Number);
   const suffix = h >= 12 ? 'PM' : 'AM';
-  const hour   = h % 12 || 12;
+  const hour = h % 12 || 12;
   return `${hour}:${String(m).padStart(2, '0')} ${suffix}`;
 }
 
@@ -90,9 +90,9 @@ function canCloseRoom(room) {
 // ── Data fetch ────────────────────────────────────────
 async function fetchRooms() {
   try {
-    const res  = await fetch('/api/rooms');
+    const res = await fetch('/api/rooms');
     const data = await res.json();
-    allRooms   = Array.isArray(data?.rooms) ? data.rooms : [];
+    allRooms = Array.isArray(data?.rooms) ? data.rooms : [];
     renderAdminRooms();
   } catch (err) {
     document.getElementById('admin-room-list').innerHTML =
@@ -115,8 +115,8 @@ function renderAdminRooms() {
   const list = document.getElementById('admin-room-list');
 
   const filtered = allRooms.filter(r => {
-    const floorMatch  = activeFloor  === 'all' || r.floor === Number(activeFloor);
-    const statusMatch = activeStatus === 'all'  || r.status === activeStatus;
+    const floorMatch = activeFloor === 'all' || r.floor === Number(activeFloor);
+    const statusMatch = activeStatus === 'all' || r.status === activeStatus;
     return floorMatch && statusMatch;
   });
 
@@ -134,12 +134,12 @@ function renderAdminRooms() {
 }
 
 function rowHTML(room) {
-  const isOpen     = room.status === 'open';
-  const isMeeting  = room.status === 'meeting';
-  const isActive   = isOpen || isMeeting;
-  const isMine     = isActive && room.supervisor === sessionTeacher.name;
-  const closeable  = canCloseRoom(room);
-  const editing    = editingId === room.id;
+  const isOpen = room.status === 'open';
+  const isMeeting = room.status === 'meeting';
+  const isActive = isOpen || isMeeting;
+  const isMine = isActive && room.supervisor === sessionTeacher.name;
+  const closeable = canCloseRoom(room);
+  const editing = editingId === room.id;
 
   const statusLabel = isOpen ? 'Available' : isMeeting ? 'Meeting' : 'Empty';
 
@@ -158,9 +158,9 @@ function rowHTML(room) {
   if (editing) {
     actionBlock = ''; // form takes the row's bottom band
   } else if (!isActive) {
-    actionBlock = `<button class="row-btn open-btn" data-action="edit" data-id="${room.id}">Open Room</button>`;
+    actionBlock = `<button type="button" class="row-btn open-btn" data-action="edit" data-id="${room.id}">Open Room</button>`;
   } else if (closeable) {
-    actionBlock = `<button class="row-btn close-btn" data-action="close" data-id="${room.id}">${isMeeting ? 'End Meeting' : 'Close Room'}</button>`;
+    actionBlock = `<button type="button" class="row-btn close-btn" data-action="close" data-id="${room.id}">${isMeeting ? 'End Meeting' : 'Close Room'}</button>`;
   } else {
     actionBlock = `<span class="row-locked">Supervised by another</span>`;
   }
@@ -210,8 +210,8 @@ function formHTML(room) {
       </div>
       ${meetingToggle}
       <div class="form-actions">
-        <button class="btn-cancel" data-action="cancel" data-id="${room.id}">Cancel</button>
-        <button class="btn-confirm" data-action="confirm" data-id="${room.id}">Confirm Open</button>
+        <button type="button" class="btn-cancel" data-action="cancel" data-id="${room.id}">Cancel</button>
+<button type="button" class="btn-confirm" data-action="confirm" data-id="${room.id}">Confirm Open</button>
       </div>
     </div>
   `;
@@ -225,7 +225,7 @@ function wireRowEvents() {
 
 async function handleAction(e) {
   const action = e.currentTarget.dataset.action;
-  const id     = e.currentTarget.dataset.id;
+  const id = e.currentTarget.dataset.id;
 
   if (action === 'edit') {
     editingId = id;
@@ -238,11 +238,11 @@ async function handleAction(e) {
     return;
   }
   if (action === 'confirm') {
-    const fromInput  = document.getElementById(`form-from-${id}`);
+    const fromInput = document.getElementById(`form-from-${id}`);
     const untilInput = document.getElementById(`form-until-${id}`);
     const meetingBox = document.getElementById(`form-meeting-${id}`);
 
-    const openFrom  = fromInput?.value || nowHHMM();
+    const openFrom = fromInput?.value || nowHHMM();
     const openUntil = untilInput?.value;
     if (!openUntil) {
       alert('Please pick an "open until" time.');
@@ -267,15 +267,15 @@ async function handleAction(e) {
 
 async function sendUpdate(id, payload) {
   const res = await fetch(`/api/admin/rooms/${id}`, {
-    method:  'PATCH',
+    method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
-    body:    JSON.stringify({ password: sessionPassword, ...payload }),
+    body: JSON.stringify({ password: sessionPassword, ...payload }),
   });
 
   if (res.ok) {
     const updated = await res.json();
-    allRooms      = allRooms.map(r => r.id === id ? updated : r);
-    editingId     = null;
+    allRooms = allRooms.map(r => r.id === id ? updated : r);
+    editingId = null;
     renderAdminRooms();
   } else {
     const err = await res.json().catch(() => ({}));
