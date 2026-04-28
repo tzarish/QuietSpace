@@ -1,22 +1,22 @@
 const express = require('express');
-const fs      = require('fs');
-const path    = require('path');
+const fs = require('fs');
+const path = require('path');
 
-const app  = express();
+const app = express();
 const PORT = process.env.PORT || 3002;
 
 // Statically required so Vercel bundles them into the serverless function.
-const teachersData  = require('./teachers.json');
-const initialRooms  = require('./rooms.json');
+const teachersData = require('./teachers.json');
+const initialRooms = require('./rooms.json');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ── Storage: Upstash Redis (Vercel) or local JSON file (dev) ──────────────────
 
-const UPSTASH_URL   = process.env.UPSTASH_REDIS_REST_URL;
+const UPSTASH_URL = process.env.UPSTASH_REDIS_REST_URL;
 const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
-const ROOMS_FILE    = path.join(__dirname, 'rooms.json');
+const ROOMS_FILE = path.join(__dirname, 'rooms.json');
 
 let memoryCache = initialRooms;
 
@@ -29,7 +29,7 @@ let lastReadSource = 'init';
 async function readRooms() {
   if (UPSTASH_URL && UPSTASH_TOKEN) {
     try {
-      const res  = await fetch(`${UPSTASH_URL}/get/rooms`, {
+      const res = await fetch(`${UPSTASH_URL}/get/rooms`, {
         headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
       });
       const json = await res.json();
@@ -70,13 +70,13 @@ async function writeRooms(data) {
   if (UPSTASH_URL && UPSTASH_TOKEN) {
     let res;
     try {
-      res = await fetch(`${UPSTASH_URL}/`, {
-        method:  'POST',
+      res = await fetch(`${UPSTASH_URL}/set/rooms`, {
+        method: 'POST',
         headers: {
-          Authorization:  `Bearer ${UPSTASH_TOKEN}`,
-          'Content-Type': 'application/json',
+          Authorization: `Bearer ${UPSTASH_TOKEN}`,
+          'Content-Type': 'text/plain',
         },
-        body: JSON.stringify(['SET', 'rooms', JSON.stringify(data)]),
+        body: JSON.stringify(data),  // raw JSON string as body — correct
       });
     } catch (err) {
       lastWriteError = `fetch threw: ${err.message}`;
@@ -144,7 +144,7 @@ app.get('/api/_debug', async (req, res) => {
     runtime: process.env.VERCEL ? 'vercel' : 'local',
     nodeVersion: process.version,
     env: {
-      UPSTASH_REDIS_REST_URL:   UPSTASH_URL   ? 'set' : 'MISSING',
+      UPSTASH_REDIS_REST_URL: UPSTASH_URL ? 'set' : 'MISSING',
       UPSTASH_REDIS_REST_TOKEN: UPSTASH_TOKEN ? 'set' : 'MISSING',
     },
     upstashStatus,
@@ -183,14 +183,17 @@ app.patch('/api/admin/rooms/:id', async (req, res) => {
       return res.status(403).json({ error: 'You can only close rooms you are supervising.' });
     }
 
-    const isActive   = status === 'open' || status === 'meeting';
-    room.status      = status;
-    room.supervisor  = isActive ? teacher.name : null;
-    room.openFrom    = isActive ? (openFrom  || null)    : null;
-    room.openUntil   = isActive ? (openUntil || '18:30') : null;
+    const isActive = status === 'open' || status === 'meeting';
+    room.status = status;
+    room.supervisor = isActive ? teacher.name : null;
+    room.openFrom = isActive ? (openFrom || null) : null;
+    room.openUntil = isActive ? (openUntil || '18:30') : null;
     room.lastUpdated = new Date().toISOString();
 
-    await writeRooms(data);
+    // Don't await — respond immediately, persist in background
+    // If write fails, memoryCache still has the update for this instance
+    writeRooms(data).catch(err => console.error('[QuietSpace] writeRooms failed:', err.message));
+
     res.json(room);
   } catch (err) {
     console.error(err);
