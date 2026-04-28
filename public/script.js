@@ -18,6 +18,24 @@ function fmtUpdated(iso) {
   return new Date(iso).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
 }
 
+function isExpired(room) {
+  if (room.status !== 'open' && room.status !== 'meeting') return false;
+  if (!room.openUntil) return false;
+  const now = new Date();
+  if (room.lastUpdated) {
+    const updated = new Date(room.lastUpdated);
+    if (updated.toDateString() !== now.toDateString()) return true;
+  }
+  const [h, m] = room.openUntil.split(':').map(Number);
+  const expiry = new Date(now);
+  expiry.setHours(h, m, 0, 0);
+  return now >= expiry;
+}
+
+function effectiveStatus(room) {
+  return isExpired(room) ? 'closed' : room.status;
+}
+
 async function fetchRooms() {
   try {
     const res  = await fetch('/api/rooms');
@@ -33,8 +51,9 @@ async function fetchRooms() {
 }
 
 function cardHTML(room) {
-  const isOpen    = room.status === 'open';
-  const isMeeting = room.status === 'meeting';
+  const status    = effectiveStatus(room);
+  const isOpen    = status === 'open';
+  const isMeeting = status === 'meeting';
   const isActive  = isOpen || isMeeting;
 
   const badgeLabel  = isOpen ? 'AVAILABLE' : isMeeting ? 'MEETING HAPPENING' : 'EMPTY';
@@ -52,13 +71,13 @@ function cardHTML(room) {
     : '';
 
   return `
-    <div class="room-card ${room.status}">
+    <div class="room-card ${status}">
       <div class="card-top-row">
         <span class="card-floor">Floor ${room.floor}</span>
         ${nameTag}
       </div>
       <div class="room-number">${room.number}</div>
-      <span class="status-badge ${room.status}">${badgeLabel}</span>
+      <span class="status-badge ${status}">${badgeLabel}</span>
       <div class="card-details">
         <div class="card-detail-row">
           <span class="detail-label">Teacher</span>
@@ -83,7 +102,7 @@ function renderRooms() {
 
   const filtered = allRooms.filter(r => {
     const floorMatch  = activeFloor  === 'all' || r.floor === Number(activeFloor);
-    const statusMatch = activeStatus === 'all'  || r.status === activeStatus;
+    const statusMatch = activeStatus === 'all'  || effectiveStatus(r) === activeStatus;
     const searchMatch = !q ||
       r.number.toLowerCase().includes(q) ||
       (r.supervisor && r.supervisor.toLowerCase().includes(q)) ||
