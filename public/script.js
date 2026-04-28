@@ -36,11 +36,26 @@ function effectiveStatus(room) {
   return isExpired(room) ? 'closed' : room.status;
 }
 
+// ── Live clock ──────────────────────────────────────
+function tickClock() {
+  const now = new Date();
+  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  const date = now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+  const t = document.getElementById('clock');
+  const d = document.getElementById('clock-date');
+  if (t) t.textContent = time;
+  if (d) d.textContent = date;
+}
+tickClock();
+setInterval(tickClock, 30 * 1000);
+
+// ── Data fetch ──────────────────────────────────────
 async function fetchRooms() {
   try {
     const res  = await fetch('/api/rooms');
     const data = await res.json();
-    allRooms   = data.rooms;
+    allRooms   = Array.isArray(data?.rooms) ? data.rooms : [];
+    renderStats();
     renderRooms();
     document.getElementById('last-refresh').textContent =
       'Updated ' + new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
@@ -50,13 +65,26 @@ async function fetchRooms() {
   }
 }
 
+function renderStats() {
+  let open = 0, closed = 0, meeting = 0;
+  allRooms.forEach(r => {
+    const s = effectiveStatus(r);
+    if (s === 'open')        open++;
+    else if (s === 'meeting') meeting++;
+    else                      closed++;
+  });
+  document.getElementById('stat-open').textContent    = open;
+  document.getElementById('stat-empty').textContent   = closed;
+  document.getElementById('stat-meeting').textContent = meeting;
+}
+
 function cardHTML(room) {
   const status    = effectiveStatus(room);
   const isOpen    = status === 'open';
   const isMeeting = status === 'meeting';
   const isActive  = isOpen || isMeeting;
 
-  const badgeLabel  = isOpen ? 'AVAILABLE' : isMeeting ? 'MEETING HAPPENING' : 'EMPTY';
+  const badgeLabel  = isOpen ? 'AVAILABLE' : isMeeting ? 'MEETING' : 'EMPTY';
   const teacherLine = isActive && room.supervisor ? room.supervisor : '—';
 
   let timeRange = '—';
@@ -66,30 +94,31 @@ function cardHTML(room) {
     timeRange = `Until ${fmt12(room.openUntil)}`;
   }
 
-  const nameTag = room.name
-    ? `<div class="room-name-tag">${room.name}</div>`
-    : '';
+  const nameTag = room.name ? `<div class="room-name-tag">${room.name}</div>` : '';
 
   return `
     <div class="room-card ${status}">
-      <div class="card-top-row">
-        <span class="card-floor">Floor ${room.floor}</span>
-        ${nameTag}
-      </div>
-      <div class="room-number">${room.number}</div>
-      <span class="status-badge ${status}">${badgeLabel}</span>
-      <div class="card-details">
-        <div class="card-detail-row">
-          <span class="detail-label">Teacher</span>
-          <span class="detail-value">${teacherLine}</span>
+      <div class="card-stripe ${status}"></div>
+      <div class="card-body">
+        <div class="card-top-row">
+          <span class="card-floor">FL ${room.floor}</span>
+          ${nameTag}
         </div>
-        <div class="card-detail-row">
-          <span class="detail-label">Hours</span>
-          <span class="detail-value">${timeRange}</span>
-        </div>
-        <div class="card-detail-row">
-          <span class="detail-label">Updated</span>
-          <span class="detail-value">${fmtUpdated(room.lastUpdated)}</span>
+        <div class="room-number">${room.number}</div>
+        <span class="status-badge ${status}">${badgeLabel}</span>
+        <div class="card-details">
+          <div class="card-detail-row">
+            <span class="detail-label">Teacher</span>
+            <span class="detail-value">${teacherLine}</span>
+          </div>
+          <div class="card-detail-row">
+            <span class="detail-label">Hours</span>
+            <span class="detail-value">${timeRange}</span>
+          </div>
+          <div class="card-detail-row">
+            <span class="detail-label">Updated</span>
+            <span class="detail-value">${fmtUpdated(room.lastUpdated)}</span>
+          </div>
         </div>
       </div>
     </div>
@@ -116,19 +145,16 @@ function renderRooms() {
     return;
   }
 
-  // ── Specific floor selected: flat grid ──
   if (activeFloor !== 'all') {
     container.className = 'room-grid';
     container.innerHTML = filtered.map(cardHTML).join('');
     return;
   }
 
-  // ── All Floors: grouped sections ──
   container.className = 'floor-sections';
   container.innerHTML = [2, 3, 4].map(floor => {
     const rooms = filtered.filter(r => r.floor === floor);
     if (rooms.length === 0) return '';
-
     return `
       <section class="floor-section">
         <div class="floor-section-header">
@@ -144,7 +170,6 @@ function renderRooms() {
     `;
   }).join('');
 
-  // Wire floor-title clicks → activate that floor's filter button
   container.querySelectorAll('.floor-section-title').forEach(btn => {
     btn.addEventListener('click', () => {
       const floor = btn.dataset.floor;
@@ -158,7 +183,6 @@ function renderRooms() {
 }
 
 // ── Filter wiring ─────────────────────────────────────
-
 document.querySelectorAll('#floor-filters .filter-btn').forEach(btn => {
   btn.addEventListener('click', () => {
     document.querySelectorAll('#floor-filters .filter-btn').forEach(b => b.classList.remove('active'));

@@ -11,12 +11,36 @@
   <header>
     <div class="header-left">
       <a href="index.html"><img src="QS_logo.jpg" alt="QuietSpace" class="header-logo" onerror="this.style.display='none'" /></a>
+      <div class="brand-text">
+        <h1>QuietSpace</h1>
+        <p class="tag">Find a room. Now.</p>
+      </div>
     </div>
     <div class="header-right">
+      <div>
+        <div class="clock-time" id="clock">--:--</div>
+        <div class="clock-date" id="clock-date"></div>
+      </div>
       <span id="last-refresh" class="refresh-label"></span>
-      <a href="admin.html" class="btn btn-ghost staff-btn">Staff Access</a>
+      <a href="admin.html" class="staff-link">Staff →</a>
     </div>
   </header>
+
+  <section class="stat-strip">
+    <div class="stat stat-open">
+      <div class="stat-num" id="stat-open">—</div>
+      <div class="stat-label">Available</div>
+    </div>
+    <div class="stat stat-empty">
+      <div class="stat-num" id="stat-empty">—</div>
+      <div class="stat-label">Empty</div>
+    </div>
+    <div class="stat stat-meeting">
+      <div class="stat-num" id="stat-meeting">—</div>
+      <div class="stat-label">In Meeting</div>
+    </div>
+  </section>
+
   <main>
     <div class="search-bar-wrap">
       <input
@@ -30,10 +54,10 @@
       <div class="filter-group">
         <span class="filter-label">Floor</span>
         <div class="filter-bar" id="floor-filters">
-          <button class="filter-btn active" data-floor="all">All Floors</button>
-          <button class="filter-btn" data-floor="2">2nd Floor</button>
-          <button class="filter-btn" data-floor="3">3rd Floor</button>
-          <button class="filter-btn" data-floor="4">4th Floor</button>
+          <button class="filter-btn active" data-floor="all">All</button>
+          <button class="filter-btn" data-floor="2">2nd</button>
+          <button class="filter-btn" data-floor="3">3rd</button>
+          <button class="filter-btn" data-floor="4">4th</button>
         </div>
       </div>
       <div class="filter-group">
