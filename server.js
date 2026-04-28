@@ -20,6 +20,12 @@ const ROOMS_FILE    = path.join(__dirname, 'rooms.json');
 
 let memoryCache = initialRooms;
 
+function isValidRoomsShape(obj) {
+  return obj && Array.isArray(obj.rooms) && obj.rooms.length > 0;
+}
+
+let lastReadSource = 'init';
+
 async function readRooms() {
   if (UPSTASH_URL && UPSTASH_TOKEN) {
     try {
@@ -27,35 +33,68 @@ async function readRooms() {
         headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
       });
       const json = await res.json();
-      if (json.result) return JSON.parse(json.result);
+      if (json.result) {
+        const parsed = JSON.parse(json.result);
+        if (isValidRoomsShape(parsed)) {
+          lastReadSource = 'upstash';
+          return parsed;
+        }
+        console.warn('[QuietSpace] Upstash returned malformed data; re-seeding from bundle.');
+      } else {
+        console.warn('[QuietSpace] Upstash key empty; seeding from bundle.');
+      }
+      // Self-heal: re-seed Upstash from bundled rooms.json
+      await writeRooms(initialRooms);
+      lastReadSource = 'upstash-reseed';
+      return initialRooms;
     } catch (err) {
-      console.error('Upstash read failed:', err.message);
+      console.error('[QuietSpace] Upstash read failed:', err.message);
+      lastReadSource = 'memory-fallback';
+      return memoryCache;
     }
-    return memoryCache;
   }
   try {
-    return JSON.parse(fs.readFileSync(ROOMS_FILE, 'utf8'));
+    const parsed = JSON.parse(fs.readFileSync(ROOMS_FILE, 'utf8'));
+    lastReadSource = 'fs';
+    return parsed;
   } catch {
+    lastReadSource = 'memory-fallback';
     return memoryCache;
   }
 }
 
+let lastWriteError = null;
+
 async function writeRooms(data) {
   memoryCache = data;
   if (UPSTASH_URL && UPSTASH_TOKEN) {
-    await fetch(`${UPSTASH_URL}/set/rooms`, {
-      method:  'POST',
-      headers: {
-        Authorization:  `Bearer ${UPSTASH_TOKEN}`,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({ value: JSON.stringify(data) })
-    });
+    let res;
+    try {
+      res = await fetch(`${UPSTASH_URL}/`, {
+        method:  'POST',
+        headers: {
+          Authorization:  `Bearer ${UPSTASH_TOKEN}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(['SET', 'rooms', JSON.stringify(data)]),
+      });
+    } catch (err) {
+      lastWriteError = `fetch threw: ${err.message}`;
+      throw new Error(lastWriteError);
+    }
+    if (!res.ok) {
+      const text = await res.text().catch(() => '<unreadable body>');
+      lastWriteError = `Upstash SET ${res.status}: ${text.slice(0, 200)}`;
+      throw new Error(lastWriteError);
+    }
+    lastWriteError = null;
     return;
   }
   try {
     fs.writeFileSync(ROOMS_FILE, JSON.stringify(data, null, 2));
+    lastWriteError = null;
   } catch (err) {
+    lastWriteError = `fs write failed: ${err.message}`;
     console.warn('Could not persist rooms.json (read-only fs?):', err.message);
   }
 }
@@ -64,20 +103,7 @@ function findTeacher(password) {
   return teachersData.teachers.find(t => t.password === password) || null;
 }
 
-// ── Seed Redis with rooms.json on first deploy ────────────────────────────────
-async function seedIfEmpty() {
-  if (!UPSTASH_URL || !UPSTASH_TOKEN) return;
-  const res  = await fetch(`${UPSTASH_URL}/get/rooms`, {
-    headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
-  });
-  const json = await res.json();
-  if (!json.result) {
-    const initial = JSON.parse(fs.readFileSync(ROOMS_FILE, 'utf8'));
-    await writeRooms(initial);
-    console.log('Redis seeded with rooms.json');
-  }
-}
-seedIfEmpty().catch(console.error);
+// Seed handled lazily by readRooms self-heal. No top-level await needed.
 
 // ── Routes ────────────────────────────────────────────────────────────────────
 
@@ -89,6 +115,48 @@ app.get('/api/rooms', async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Could not load rooms' });
   }
+});
+
+app.get('/api/_debug', async (req, res) => {
+  let upstashStatus = 'not-configured';
+  let upstashSample = null;
+  if (UPSTASH_URL && UPSTASH_TOKEN) {
+    try {
+      const r = await fetch(`${UPSTASH_URL}/get/rooms`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
+      });
+      const j = await r.json();
+      upstashStatus = j.result ? 'has-data' : 'empty';
+      if (j.result) {
+        const parsed = JSON.parse(j.result);
+        upstashSample = {
+          keys: Object.keys(parsed || {}),
+          roomCount: Array.isArray(parsed?.rooms) ? parsed.rooms.length : 'NOT-ARRAY',
+        };
+      }
+    } catch (err) {
+      upstashStatus = 'fetch-error: ' + err.message;
+    }
+  }
+  let data;
+  try { data = await readRooms(); } catch (e) { data = { error: e.message }; }
+  res.json({
+    runtime: process.env.VERCEL ? 'vercel' : 'local',
+    nodeVersion: process.version,
+    env: {
+      UPSTASH_REDIS_REST_URL:   UPSTASH_URL   ? 'set' : 'MISSING',
+      UPSTASH_REDIS_REST_TOKEN: UPSTASH_TOKEN ? 'set' : 'MISSING',
+    },
+    upstashStatus,
+    upstashSample,
+    lastReadSource,
+    bundledRoomCount: Array.isArray(initialRooms?.rooms) ? initialRooms.rooms.length : 'NOT-ARRAY',
+    returnedShape: {
+      keys: Object.keys(data || {}),
+      roomCount: Array.isArray(data?.rooms) ? data.rooms.length : 'NOT-ARRAY',
+      sampleRoom: Array.isArray(data?.rooms) ? data.rooms[0] : null,
+    },
+  });
 });
 
 app.post('/api/admin/login', (req, res) => {
