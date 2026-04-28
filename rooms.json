@@ -6,7 +6,9 @@
       "floor": 2,
       "status": "closed",
       "supervisor": null,
-      "lastUpdated": "2026-04-27T08:00:00Z"
+      "lastUpdated": "2026-04-28T02:42:27.809Z",
+      "openFrom": null,
+      "openUntil": null
     },
     {
       "id": "room-202",
@@ -14,7 +16,7 @@
       "floor": 2,
       "status": "closed",
       "supervisor": null,
-      "lastUpdated": "2026-04-28T01:43:08.026Z",
+      "lastUpdated": "2026-04-28T02:42:27.207Z",
       "openFrom": null,
       "openUntil": null
     },
@@ -40,17 +42,21 @@
       "id": "room-205",
       "number": "205",
       "floor": 2,
-      "status": "open",
-      "supervisor": "Gregory Rivera",
-      "lastUpdated": "2026-04-27T14:51:18.410Z"
+      "status": "closed",
+      "supervisor": null,
+      "lastUpdated": "2026-04-28T02:29:52.373Z",
+      "openFrom": null,
+      "openUntil": null
     },
     {
       "id": "room-206",
       "number": "206",
       "floor": 2,
-      "status": "open",
-      "supervisor": "Gregory Rivera",
-      "lastUpdated": "2026-04-27T14:57:41.767Z"
+      "status": "closed",
+      "supervisor": null,
+      "lastUpdated": "2026-04-28T02:29:52.707Z",
+      "openFrom": null,
+      "openUntil": null
     },
     {
       "id": "room-207",
@@ -58,7 +64,9 @@
       "floor": 2,
       "status": "closed",
       "supervisor": null,
-      "lastUpdated": "2026-04-27T08:00:00Z"
+      "lastUpdated": "2026-04-28T02:29:53.119Z",
+      "openFrom": null,
+      "openUntil": null
     },
     {
       "id": "room-208",
@@ -66,7 +74,9 @@
       "floor": 2,
       "status": "closed",
       "supervisor": null,
-      "lastUpdated": "2026-04-27T08:00:00Z"
+      "lastUpdated": "2026-04-28T02:29:53.478Z",
+      "openFrom": null,
+      "openUntil": null
     },
     {
       "id": "room-209",

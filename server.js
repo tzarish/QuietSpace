@@ -5,7 +5,9 @@ const path    = require('path');
 const app  = express();
 const PORT = process.env.PORT || 3002;
 
-const TEACHERS_FILE = path.join(__dirname, 'teachers.json');
+// Statically required so Vercel bundles them into the serverless function.
+const teachersData  = require('./teachers.json');
+const initialRooms  = require('./rooms.json');
 
 app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
@@ -16,19 +18,30 @@ const UPSTASH_URL   = process.env.UPSTASH_REDIS_REST_URL;
 const UPSTASH_TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN;
 const ROOMS_FILE    = path.join(__dirname, 'rooms.json');
 
+let memoryCache = initialRooms;
+
 async function readRooms() {
   if (UPSTASH_URL && UPSTASH_TOKEN) {
-    const res  = await fetch(`${UPSTASH_URL}/get/rooms`, {
-      headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
-    });
-    const json = await res.json();
-    if (json.result) return JSON.parse(json.result);
+    try {
+      const res  = await fetch(`${UPSTASH_URL}/get/rooms`, {
+        headers: { Authorization: `Bearer ${UPSTASH_TOKEN}` }
+      });
+      const json = await res.json();
+      if (json.result) return JSON.parse(json.result);
+    } catch (err) {
+      console.error('Upstash read failed:', err.message);
+    }
+    return memoryCache;
   }
-  // Fallback: local file for dev
-  return JSON.parse(fs.readFileSync(ROOMS_FILE, 'utf8'));
+  try {
+    return JSON.parse(fs.readFileSync(ROOMS_FILE, 'utf8'));
+  } catch {
+    return memoryCache;
+  }
 }
 
 async function writeRooms(data) {
+  memoryCache = data;
   if (UPSTASH_URL && UPSTASH_TOKEN) {
     await fetch(`${UPSTASH_URL}/set/rooms`, {
       method:  'POST',
@@ -40,13 +53,15 @@ async function writeRooms(data) {
     });
     return;
   }
-  // Fallback: local file for dev
-  fs.writeFileSync(ROOMS_FILE, JSON.stringify(data, null, 2));
+  try {
+    fs.writeFileSync(ROOMS_FILE, JSON.stringify(data, null, 2));
+  } catch (err) {
+    console.warn('Could not persist rooms.json (read-only fs?):', err.message);
+  }
 }
 
 function findTeacher(password) {
-  const { teachers } = JSON.parse(fs.readFileSync(TEACHERS_FILE, 'utf8'));
-  return teachers.find(t => t.password === password) || null;
+  return teachersData.teachers.find(t => t.password === password) || null;
 }
 
 // ── Seed Redis with rooms.json on first deploy ────────────────────────────────
